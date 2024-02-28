@@ -4,6 +4,31 @@
   
   
   <entry>
+    <title>面试初探-1</title>
+    <link href="/2024/02/28/%E9%9D%A2%E8%AF%95%E5%88%9D%E6%8E%A2-1/"/>
+    <url>/2024/02/28/%E9%9D%A2%E8%AF%95%E5%88%9D%E6%8E%A2-1/</url>
+    
+    <content type="html"><![CDATA[<hr><p>##前言<br>    两年了，心情躁动，虽然大行情不太好，还是忍不住想出来看看，刷新了简历，boss正好有hr主动来约了面试</p><h2 id="经验"><a href="#经验" class="headerlink" title="经验"></a>经验</h2><h3 id="1-自我介绍"><a href="#1-自我介绍" class="headerlink" title="1.自我介绍"></a>1.自我介绍</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">巴拉巴拉巴拉<br></code></pre></td></tr></table></figure><h3 id="2-运维的服务器数量，平常有做一个系统运维的工作吗"><a href="#2-运维的服务器数量，平常有做一个系统运维的工作吗" class="headerlink" title="2.运维的服务器数量，平常有做一个系统运维的工作吗"></a>2.运维的服务器数量，平常有做一个系统运维的工作吗</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$<br></code></pre></td></tr></table></figure><h3 id="3-有没有做过k8s升级"><a href="#3-有没有做过k8s升级" class="headerlink" title="3.有没有做过k8s升级"></a>3.有没有做过k8s升级</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="4-简述下POD的运行过程"><a href="#4-简述下POD的运行过程" class="headerlink" title="4.简述下POD的运行过程"></a>4.简述下POD的运行过程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="5-贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。"><a href="#5-贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。" class="headerlink" title="5.贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。"></a>5.贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="5-贵公司cicd情况介绍"><a href="#5-贵公司cicd情况介绍" class="headerlink" title="5.贵公司cicd情况介绍"></a>5.贵公司cicd情况介绍</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="5-熟悉哪些开发语言，你一般用哪些语言二开"><a href="#5-熟悉哪些开发语言，你一般用哪些语言二开" class="headerlink" title="5.熟悉哪些开发语言，你一般用哪些语言二开"></a>5.熟悉哪些开发语言，你一般用哪些语言二开</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="6-有没有接触过k8s二次开发"><a href="#6-有没有接触过k8s二次开发" class="headerlink" title="6.有没有接触过k8s二次开发"></a>6.有没有接触过k8s二次开发</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="6-介绍下k8s架构的优化，你是怎么做的"><a href="#6-介绍下k8s架构的优化，你是怎么做的" class="headerlink" title="6.介绍下k8s架构的优化，你是怎么做的"></a>6.介绍下k8s架构的优化，你是怎么做的</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="7-部署k8s前，有没有一些内核的优化，包括哪些"><a href="#7-部署k8s前，有没有一些内核的优化，包括哪些" class="headerlink" title="7.部署k8s前，有没有一些内核的优化，包括哪些"></a>7.部署k8s前，有没有一些内核的优化，包括哪些</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="8-python-列表和元组的区别，介绍下你常用的数据类型"><a href="#8-python-列表和元组的区别，介绍下你常用的数据类型" class="headerlink" title="8.python 列表和元组的区别，介绍下你常用的数据类型"></a>8.python 列表和元组的区别，介绍下你常用的数据类型</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="9-日志你们是怎么做的"><a href="#9-日志你们是怎么做的" class="headerlink" title="9. 日志你们是怎么做的"></a>9. 日志你们是怎么做的</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="10-有没有用到k8s-dashboard"><a href="#10-有没有用到k8s-dashboard" class="headerlink" title="10. 有没有用到k8s dashboard"></a>10. 有没有用到k8s dashboard</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="11-看你简历有写到ansible，对于ansible了解多少，用过哪些模块"><a href="#11-看你简历有写到ansible，对于ansible了解多少，用过哪些模块" class="headerlink" title="11. 看你简历有写到ansible，对于ansible了解多少，用过哪些模块"></a>11. 看你简历有写到ansible，对于ansible了解多少，用过哪些模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="12-对于ansible了解多少，用过哪些模块"><a href="#12-对于ansible了解多少，用过哪些模块" class="headerlink" title="12. 对于ansible了解多少，用过哪些模块"></a>12. 对于ansible了解多少，用过哪些模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure><h3 id="13-未完待更新"><a href="#13-未完待更新" class="headerlink" title="13. 未完待更新"></a>13. 未完待更新</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>面试</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>面试经验</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>路过人间</title>
     <link href="/2024/02/28/%E8%B7%AF%E8%BF%87%E4%BA%BA%E9%97%B4/"/>
     <url>/2024/02/28/%E8%B7%AF%E8%BF%87%E4%BA%BA%E9%97%B4/</url>
