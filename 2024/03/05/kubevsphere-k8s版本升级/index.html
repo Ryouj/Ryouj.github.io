@@ -16,22 +16,24 @@
   <meta name="author" content="Ryouj">
   <meta name="keywords" content="">
   
-    <meta name="description" content="前言两年了，心情躁动，虽然大行情不太好，还是忍不住想出来看看，刷新了简历，boss正好有hr主动来约了面试  面试过程1.自我介绍1巴拉巴拉巴拉  2.问运维的服务器数量，平常做哪些系统运维的工作1$  3.有没有做过k8s升级,怎么升级的1$   4.简述下POD的运行过程1$   5.贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。1$   5.贵公司cicd情况介绍1$   6.熟悉">
+    <meta name="description" content="当前版本： k8s版本：1.23.14 ks版本：v3.3.1   k8s-1.23.14升级至1.24.17 k8s-v1.23.14升级至v.1.24.17 dockershim 迁移到 cri-dockerd  升级步骤1、下载最新kk二进制文件1wget https:&#x2F;&#x2F;github.com&#x2F;kubesphere&#x2F;kubekey&#x2F;releases&#x2F;download&#x2F;v3.1.0-rc.0&#x2F;">
 <meta property="og:type" content="article">
-<meta property="og:title" content="面试初探-1">
-<meta property="og:url" content="https://ryouj.itseeds.top/2024/02/28/%E9%9D%A2%E8%AF%95%E5%88%9D%E6%8E%A2-1/index.html">
+<meta property="og:title" content="K8S-kubevsphere平台部署">
+<meta property="og:url" content="https://ryouj.itseeds.top/2024/03/05/kubevsphere-k8s%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/index.html">
 <meta property="og:site_name" content="枫の忆">
-<meta property="og:description" content="前言两年了，心情躁动，虽然大行情不太好，还是忍不住想出来看看，刷新了简历，boss正好有hr主动来约了面试  面试过程1.自我介绍1巴拉巴拉巴拉  2.问运维的服务器数量，平常做哪些系统运维的工作1$  3.有没有做过k8s升级,怎么升级的1$   4.简述下POD的运行过程1$   5.贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。1$   5.贵公司cicd情况介绍1$   6.熟悉">
+<meta property="og:description" content="当前版本： k8s版本：1.23.14 ks版本：v3.3.1   k8s-1.23.14升级至1.24.17 k8s-v1.23.14升级至v.1.24.17 dockershim 迁移到 cri-dockerd  升级步骤1、下载最新kk二进制文件1wget https:&#x2F;&#x2F;github.com&#x2F;kubesphere&#x2F;kubekey&#x2F;releases&#x2F;download&#x2F;v3.1.0-rc.0&#x2F;">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2024-02-28T06:50:18.000Z">
-<meta property="article:modified_time" content="2024-02-28T10:20:08.434Z">
+<meta property="article:published_time" content="2024-03-05T06:48:47.000Z">
+<meta property="article:modified_time" content="2024-03-05T07:04:59.124Z">
 <meta property="article:author" content="Ryouj">
-<meta property="article:tag" content="面试经验">
+<meta property="article:tag" content="k8s升级">
+<meta property="article:tag" content="kubevsphere">
+<meta property="article:tag" content="k8s">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>面试初探-1 - 枫の忆</title>
+  <title>K8S-kubevsphere平台部署 - 枫の忆</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -197,7 +199,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="面试初探-1"></span>
+            <span id="subtitle" data-typed-text="K8S-kubevsphere平台部署"></span>
           
         </div>
 
@@ -208,8 +210,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2024-02-28 14:50" pubdate>
-          2024年2月28日 下午
+        <time datetime="2024-03-05 14:48" pubdate>
+          2024年3月5日 下午
         </time>
       </span>
     
@@ -220,7 +222,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          418 字
+          1.3k 字
         
       </span>
     
@@ -231,7 +233,7 @@
         
         
         
-          4 分钟
+          12 分钟
         
       </span>
     
@@ -269,45 +271,39 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">面试初探-1</h1>
+            <h1 style="display: none">K8S-kubevsphere平台部署</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><pre><code class="hljs">两年了，心情躁动，虽然大行情不太好，还是忍不住想出来看看，刷新了简历，boss正好有hr主动来约了面试
-</code></pre>
-<h2 id="面试过程"><a href="#面试过程" class="headerlink" title="面试过程"></a>面试过程</h2><h3 id="1-自我介绍"><a href="#1-自我介绍" class="headerlink" title="1.自我介绍"></a>1.自我介绍</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">巴拉巴拉巴拉<br></code></pre></td></tr></table></figure>
+                <h2 id="当前版本："><a href="#当前版本：" class="headerlink" title="当前版本："></a>当前版本：</h2><ul>
+<li>k8s版本：1.23.14</li>
+<li>ks版本：v3.3.1 </li>
+</ul>
+<h2 id="k8s-1-23-14升级至1-24-17"><a href="#k8s-1-23-14升级至1-24-17" class="headerlink" title="k8s-1.23.14升级至1.24.17"></a>k8s-1.23.14升级至1.24.17</h2><ul>
+<li>k8s-v1.23.14升级至v.1.24.17</li>
+<li>dockershim 迁移到 cri-dockerd</li>
+</ul>
+<h2 id="升级步骤"><a href="#升级步骤" class="headerlink" title="升级步骤"></a>升级步骤</h2><h4 id="1、下载最新kk二进制文件"><a href="#1、下载最新kk二进制文件" class="headerlink" title="1、下载最新kk二进制文件"></a>1、下载最新kk二进制文件</h4><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> https://github.com/kubesphere/kubekey/releases/download/v3.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">0</span>/kubekey-v3.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">0</span>-linux-amd64.tar.gz &amp;&amp; tar zxvf kubekey-v3.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">0</span>-linux-amd64.tar.gz<br></code></pre></td></tr></table></figure>
 
-<h3 id="2-问运维的服务器数量，平常做哪些系统运维的工作"><a href="#2-问运维的服务器数量，平常做哪些系统运维的工作" class="headerlink" title="2.问运维的服务器数量，平常做哪些系统运维的工作"></a>2.问运维的服务器数量，平常做哪些系统运维的工作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$<br></code></pre></td></tr></table></figure>
+<h4 id="2、删除kubelet-config-1-2X的configmap里面的featuregate-TTL参数"><a href="#2、删除kubelet-config-1-2X的configmap里面的featuregate-TTL参数" class="headerlink" title="2、删除kubelet-config-1.2X的configmap里面的featuregate TTL参数"></a>2、删除kubelet-config-1.2X的configmap里面的featuregate TTL参数</h4><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">kubectl -n kube-system edit cm kubelet-config-<span class="hljs-number">1.23</span> <br>删除featuregate下的TTL...<br> <br>&amp;&amp;<br><br>vim <span class="hljs-regexp">/etc/</span>kubernetes<span class="hljs-regexp">/manifests/</span>kube-apiserver.yaml<br>删除TTL参数<br></code></pre></td></tr></table></figure>
 
-<h3 id="3-有没有做过k8s升级-怎么升级的"><a href="#3-有没有做过k8s升级-怎么升级的" class="headerlink" title="3.有没有做过k8s升级,怎么升级的"></a>3.有没有做过k8s升级,怎么升级的</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
+<h4 id="3、升级到1-24"><a href="#3、升级到1-24" class="headerlink" title="3、升级到1.24"></a>3、升级到1.24</h4><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./kk</span> upgrade -f config-sample.yaml <span class="hljs-params">--with-kubernetes</span> v1.24.17 <br></code></pre></td></tr></table></figure>
+<h4 id="4、执行升级后脚本无反应则手动重启kubelet"><a href="#4、执行升级后脚本无反应则手动重启kubelet" class="headerlink" title="4、执行升级后脚本无反应则手动重启kubelet"></a>4、执行升级后脚本无反应则手动重启kubelet</h4><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">systemctl restart kubelet</span> <br></code></pre></td></tr></table></figure>
+<h4 id="5、完成，检查升级结果"><a href="#5、完成，检查升级结果" class="headerlink" title="5、完成，检查升级结果"></a>5、完成，检查升级结果</h4><ul>
+<li>kubelet get node（查看node version）</li>
+<li>查看env是否更新<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/kubelet/</span>kubeadm-flags.env<br></code></pre></td></tr></table></figure></li>
+<li>kubectl edit node node1 （手动更新node-cri-socket注解）<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">kubectl patch <span class="hljs-keyword">node</span> <span class="hljs-title">&lt;NODE_NAME</span>&gt; -p &#x27;&#123;<span class="hljs-string">&quot;metadata&quot;</span>: &#123;<span class="hljs-string">&quot;annotations&quot;</span>: &#123;<span class="hljs-string">&quot;kubeadm.alpha.kubernetes.io/cri-socket&quot;</span>: <span class="hljs-string">&quot;unix:///var/run/cri-dockerd.sock&quot;</span>&#125;&#125;&#125;&#x27;<br></code></pre></td></tr></table></figure></li>
+<li>kubectl version –short=true</li>
+</ul>
+<h2 id="k8s-1-24-17升级至1-25-16-需升级ks版本3-4-1，否则ks-api不兼容"><a href="#k8s-1-24-17升级至1-25-16-需升级ks版本3-4-1，否则ks-api不兼容" class="headerlink" title="k8s-1.24.17升级至1.25.16 (需升级ks版本3.4.1，否则ks-api不兼容)"></a>k8s-1.24.17升级至1.25.16 (需升级ks版本3.4.1，否则ks-api不兼容)</h2><h4 id="1、升级命令"><a href="#1、升级命令" class="headerlink" title="1、升级命令"></a>1、升级命令</h4><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./kk</span> upgrade -f config-sample.yaml <span class="hljs-params">--with-kubernetes</span> v1.25.16 <br></code></pre></td></tr></table></figure>
+<h4 id="2、重启kubelet"><a href="#2、重启kubelet" class="headerlink" title="2、重启kubelet"></a>2、重启kubelet</h4><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima">systemctl <span class="hljs-built_in">restart</span> kubelet <br>执行升级后脚本无反应则手动重启各个节点kubelet<br></code></pre></td></tr></table></figure>
 
-<h3 id="4-简述下POD的运行过程"><a href="#4-简述下POD的运行过程" class="headerlink" title="4.简述下POD的运行过程"></a>4.简述下POD的运行过程</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
+<h4 id="3、验证"><a href="#3、验证" class="headerlink" title="3、验证"></a>3、验证</h4><h2 id="k8s-1-25-16升级至1-26-16（同上）"><a href="#k8s-1-25-16升级至1-26-16（同上）" class="headerlink" title="k8s-1.25.16升级至1.26.16（同上）"></a>k8s-1.25.16升级至1.26.16（同上）</h2><h2 id="ks-kubesphere平台版本升级-3-3-1-gt-3-4-1"><a href="#ks-kubesphere平台版本升级-3-3-1-gt-3-4-1" class="headerlink" title="ks-kubesphere平台版本升级(3.3.1&gt;3.4.1)"></a>ks-kubesphere平台版本升级(3.3.1&gt;3.4.1)</h2><h4 id="当前版本：-1"><a href="#当前版本：-1" class="headerlink" title="当前版本："></a>当前版本：</h4><ul>
+<li>k8s版本：1.24.17</li>
+<li>kubesphere版本：v3.3.1 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs lua">升级ks版本 （修改<span class="hljs-built_in">config</span>-sample.yaml k8s版本为当前集群版本<span class="hljs-number">1.26</span><span class="hljs-number">.5</span>）<br>./kk upgrade -f <span class="hljs-built_in">config</span>-sample.yaml <span class="hljs-comment">--with-kubesphere v3.4.1</span><br></code></pre></td></tr></table></figure></li>
+</ul>
 
-<h3 id="5-贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。"><a href="#5-贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。" class="headerlink" title="5.贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。"></a>5.贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="5-贵公司cicd情况介绍"><a href="#5-贵公司cicd情况介绍" class="headerlink" title="5.贵公司cicd情况介绍"></a>5.贵公司cicd情况介绍</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="6-熟悉哪些开发语言，你一般用哪些语言二开"><a href="#6-熟悉哪些开发语言，你一般用哪些语言二开" class="headerlink" title="6.熟悉哪些开发语言，你一般用哪些语言二开"></a>6.熟悉哪些开发语言，你一般用哪些语言二开</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="7-有没有接触过k8s二次开发"><a href="#7-有没有接触过k8s二次开发" class="headerlink" title="7.有没有接触过k8s二次开发"></a>7.有没有接触过k8s二次开发</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-
-<h3 id="8-介绍下k8s架构的优化，你是怎么做的"><a href="#8-介绍下k8s架构的优化，你是怎么做的" class="headerlink" title="8.介绍下k8s架构的优化，你是怎么做的"></a>8.介绍下k8s架构的优化，你是怎么做的</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="9-部署k8s前，有没有一些内核的优化，包括哪些"><a href="#9-部署k8s前，有没有一些内核的优化，包括哪些" class="headerlink" title="9.部署k8s前，有没有一些内核的优化，包括哪些"></a>9.部署k8s前，有没有一些内核的优化，包括哪些</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="10-python-列表和元组的区别，介绍下你常用的数据类型"><a href="#10-python-列表和元组的区别，介绍下你常用的数据类型" class="headerlink" title="10.python 列表和元组的区别，介绍下你常用的数据类型"></a>10.python 列表和元组的区别，介绍下你常用的数据类型</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="11-日志你们是怎么做的，有没有es维护经验"><a href="#11-日志你们是怎么做的，有没有es维护经验" class="headerlink" title="11. 日志你们是怎么做的，有没有es维护经验"></a>11. 日志你们是怎么做的，有没有es维护经验</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="12-有没有用到k8s-dashboard"><a href="#12-有没有用到k8s-dashboard" class="headerlink" title="12. 有没有用到k8s dashboard"></a>12. 有没有用到k8s dashboard</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="13-看你简历有写到ansible，对于ansible了解多少，用过哪些模块"><a href="#13-看你简历有写到ansible，对于ansible了解多少，用过哪些模块" class="headerlink" title="13. 看你简历有写到ansible，对于ansible了解多少，用过哪些模块"></a>13. 看你简历有写到ansible，对于ansible了解多少，用过哪些模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="14-对于ansible了解多少，用过哪些模块"><a href="#14-对于ansible了解多少，用过哪些模块" class="headerlink" title="14. 对于ansible了解多少，用过哪些模块"></a>14. 对于ansible了解多少，用过哪些模块</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
-
-<h3 id="15-未完待更新"><a href="#15-未完待更新" class="headerlink" title="15. 未完待更新"></a>15. 未完待更新</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ <br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -325,7 +321,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E9%9D%A2%E8%AF%95/" class="category-chain-item">面试</a>
+  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
   
   
 
@@ -340,7 +336,11 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C/">#面试经验</a>
+        <a href="/tags/k8s%E5%8D%87%E7%BA%A7/">#k8s升级</a>
+      
+        <a href="/tags/kubevsphere/">#kubevsphere</a>
+      
+        <a href="/tags/k8s/">#k8s</a>
       
     </div>
   
@@ -352,8 +352,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>面试初探-1</div>
-      <div>https://ryouj.itseeds.top/2024/02/28/面试初探-1/</div>
+      <div>K8S-kubevsphere平台部署</div>
+      <div>https://ryouj.itseeds.top/2024/03/05/kubevsphere-k8s版本升级/</div>
     </div>
     <div class="license-meta">
       
@@ -365,7 +365,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2024年2月28日</div>
+          <div>2024年3月5日</div>
         </div>
       
       
@@ -397,9 +397,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2024/03/05/kubevsphere-k8s%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/" title="K8S-kubevsphere平台部署">
+                      <a href="/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/" title="kubevsphere-k8s平台部署">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">K8S-kubevsphere平台部署</span>
+                        <span class="hidden-mobile">kubevsphere-k8s平台部署</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -407,8 +407,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2024/02/28/%E8%B7%AF%E8%BF%87%E4%BA%BA%E9%97%B4/" title="路过人间">
-                        <span class="hidden-mobile">路过人间</span>
+                      <a href="/2024/02/28/%E9%9D%A2%E8%AF%95%E5%88%9D%E6%8E%A2-1/" title="面试初探-1">
+                        <span class="hidden-mobile">面试初探-1</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
