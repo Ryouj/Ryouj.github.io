@@ -4,35 +4,6 @@
   
   
   <entry>
-    <title>K8S-kubevsphere平台部署</title>
-    <link href="/2024/03/05/kubevsphere-k8s%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/"/>
-    <url>/2024/03/05/kubevsphere-k8s%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/</url>
-    
-    <content type="html"><![CDATA[<h2 id="当前版本："><a href="#当前版本：" class="headerlink" title="当前版本："></a>当前版本：</h2><ul><li>k8s版本：1.23.14</li><li>ks版本：v3.3.1 </li></ul><h2 id="k8s-1-23-14升级至1-24-17"><a href="#k8s-1-23-14升级至1-24-17" class="headerlink" title="k8s-1.23.14升级至1.24.17"></a>k8s-1.23.14升级至1.24.17</h2><ul><li>k8s-v1.23.14升级至v.1.24.17</li><li>dockershim 迁移到 cri-dockerd</li></ul><h2 id="升级步骤"><a href="#升级步骤" class="headerlink" title="升级步骤"></a>升级步骤</h2><h4 id="1、下载最新kk二进制文件"><a href="#1、下载最新kk二进制文件" class="headerlink" title="1、下载最新kk二进制文件"></a>1、下载最新kk二进制文件</h4><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> https://github.com/kubesphere/kubekey/releases/download/v3.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">0</span>/kubekey-v3.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">0</span>-linux-amd64.tar.gz &amp;&amp; tar zxvf kubekey-v3.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">0</span>-linux-amd64.tar.gz<br></code></pre></td></tr></table></figure><h4 id="2、删除kubelet-config-1-2X的configmap里面的featuregate-TTL参数"><a href="#2、删除kubelet-config-1-2X的configmap里面的featuregate-TTL参数" class="headerlink" title="2、删除kubelet-config-1.2X的configmap里面的featuregate TTL参数"></a>2、删除kubelet-config-1.2X的configmap里面的featuregate TTL参数</h4><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">kubectl -n kube-system edit cm kubelet-config-<span class="hljs-number">1.23</span> <br>删除featuregate下的TTL...<br> <br>&amp;&amp;<br><br>vim <span class="hljs-regexp">/etc/</span>kubernetes<span class="hljs-regexp">/manifests/</span>kube-apiserver.yaml<br>删除TTL参数<br></code></pre></td></tr></table></figure><h4 id="3、升级到1-24"><a href="#3、升级到1-24" class="headerlink" title="3、升级到1.24"></a>3、升级到1.24</h4><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./kk</span> upgrade -f config-sample.yaml <span class="hljs-params">--with-kubernetes</span> v1.24.17 <br></code></pre></td></tr></table></figure><h4 id="4、执行升级后脚本无反应则手动重启kubelet"><a href="#4、执行升级后脚本无反应则手动重启kubelet" class="headerlink" title="4、执行升级后脚本无反应则手动重启kubelet"></a>4、执行升级后脚本无反应则手动重启kubelet</h4><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">systemctl restart kubelet</span> <br></code></pre></td></tr></table></figure><h4 id="5、完成，检查升级结果"><a href="#5、完成，检查升级结果" class="headerlink" title="5、完成，检查升级结果"></a>5、完成，检查升级结果</h4><ul><li>kubelet get node（查看node version）</li><li>查看env是否更新<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/kubelet/</span>kubeadm-flags.env<br></code></pre></td></tr></table></figure></li><li>kubectl edit node node1 （手动更新node-cri-socket注解）<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">kubectl patch <span class="hljs-keyword">node</span> <span class="hljs-title">&lt;NODE_NAME</span>&gt; -p &#x27;&#123;<span class="hljs-string">&quot;metadata&quot;</span>: &#123;<span class="hljs-string">&quot;annotations&quot;</span>: &#123;<span class="hljs-string">&quot;kubeadm.alpha.kubernetes.io/cri-socket&quot;</span>: <span class="hljs-string">&quot;unix:///var/run/cri-dockerd.sock&quot;</span>&#125;&#125;&#125;&#x27;<br></code></pre></td></tr></table></figure></li><li>kubectl version –short=true</li></ul><h2 id="k8s-1-24-17升级至1-25-16-需升级ks版本3-4-1，否则ks-api不兼容"><a href="#k8s-1-24-17升级至1-25-16-需升级ks版本3-4-1，否则ks-api不兼容" class="headerlink" title="k8s-1.24.17升级至1.25.16 (需升级ks版本3.4.1，否则ks-api不兼容)"></a>k8s-1.24.17升级至1.25.16 (需升级ks版本3.4.1，否则ks-api不兼容)</h2><h4 id="1、升级命令"><a href="#1、升级命令" class="headerlink" title="1、升级命令"></a>1、升级命令</h4><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./kk</span> upgrade -f config-sample.yaml <span class="hljs-params">--with-kubernetes</span> v1.25.16 <br></code></pre></td></tr></table></figure><h4 id="2、重启kubelet"><a href="#2、重启kubelet" class="headerlink" title="2、重启kubelet"></a>2、重启kubelet</h4><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima">systemctl <span class="hljs-built_in">restart</span> kubelet <br>执行升级后脚本无反应则手动重启各个节点kubelet<br></code></pre></td></tr></table></figure><h4 id="3、验证"><a href="#3、验证" class="headerlink" title="3、验证"></a>3、验证</h4><h2 id="k8s-1-25-16升级至1-26-16（同上）"><a href="#k8s-1-25-16升级至1-26-16（同上）" class="headerlink" title="k8s-1.25.16升级至1.26.16（同上）"></a>k8s-1.25.16升级至1.26.16（同上）</h2><h2 id="ks-kubesphere平台版本升级-3-3-1-gt-3-4-1"><a href="#ks-kubesphere平台版本升级-3-3-1-gt-3-4-1" class="headerlink" title="ks-kubesphere平台版本升级(3.3.1&gt;3.4.1)"></a>ks-kubesphere平台版本升级(3.3.1&gt;3.4.1)</h2><h4 id="当前版本：-1"><a href="#当前版本：-1" class="headerlink" title="当前版本："></a>当前版本：</h4><ul><li>k8s版本：1.24.17</li><li>kubesphere版本：v3.3.1 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs lua">升级ks版本 （修改<span class="hljs-built_in">config</span>-sample.yaml k8s版本为当前集群版本<span class="hljs-number">1.26</span><span class="hljs-number">.5</span>）<br>./kk upgrade -f <span class="hljs-built_in">config</span>-sample.yaml <span class="hljs-comment">--with-kubesphere v3.4.1</span><br></code></pre></td></tr></table></figure></li></ul>]]></content>
-    
-    
-    <categories>
-      
-      <category>k8s</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>k8s</tag>
-      
-      <tag>kubevsphere</tag>
-      
-      <tag>k8s升级</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
     <title>kubevsphere-k8s平台部署</title>
     <link href="/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/"/>
     <url>/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/</url>
@@ -49,9 +20,38 @@
     
     <tags>
       
+      <tag>k8s升级</tag>
+      
       <tag>kubevsphere</tag>
       
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>K8S-kubevsphere平台部署</title>
+    <link href="/2024/03/05/kubevsphere-k8s%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/"/>
+    <url>/2024/03/05/kubevsphere-k8s%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/</url>
+    
+    <content type="html"><![CDATA[<h2 id="当前版本："><a href="#当前版本：" class="headerlink" title="当前版本："></a>当前版本：</h2><ul><li>k8s版本：1.23.14</li><li>ks版本：v3.3.1 </li></ul><h2 id="k8s-1-23-14升级至1-24-17"><a href="#k8s-1-23-14升级至1-24-17" class="headerlink" title="k8s-1.23.14升级至1.24.17"></a>k8s-1.23.14升级至1.24.17</h2><ul><li>k8s-v1.23.14升级至v.1.24.17</li><li>dockershim 迁移到 cri-dockerd</li></ul><h2 id="升级步骤"><a href="#升级步骤" class="headerlink" title="升级步骤"></a>升级步骤</h2><h4 id="1、下载最新kk二进制文件"><a href="#1、下载最新kk二进制文件" class="headerlink" title="1、下载最新kk二进制文件"></a>1、下载最新kk二进制文件</h4><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">wget</span> https://github.com/kubesphere/kubekey/releases/download/v3.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">0</span>/kubekey-v3.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">0</span>-linux-amd64.tar.gz &amp;&amp; tar zxvf kubekey-v3.<span class="hljs-number">1</span>.<span class="hljs-number">0</span>-rc.<span class="hljs-number">0</span>-linux-amd64.tar.gz<br></code></pre></td></tr></table></figure><h4 id="2、删除kubelet-config-1-2X的configmap里面的featuregate-TTL参数"><a href="#2、删除kubelet-config-1-2X的configmap里面的featuregate-TTL参数" class="headerlink" title="2、删除kubelet-config-1.2X的configmap里面的featuregate TTL参数"></a>2、删除kubelet-config-1.2X的configmap里面的featuregate TTL参数</h4><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs awk">kubectl -n kube-system edit cm kubelet-config-<span class="hljs-number">1.23</span> <br>删除featuregate下的TTL...<br> <br>&amp;&amp;<br><br>vim <span class="hljs-regexp">/etc/</span>kubernetes<span class="hljs-regexp">/manifests/</span>kube-apiserver.yaml<br>删除TTL参数<br></code></pre></td></tr></table></figure><h4 id="3、升级到1-24"><a href="#3、升级到1-24" class="headerlink" title="3、升级到1.24"></a>3、升级到1.24</h4><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./kk</span> upgrade -f config-sample.yaml <span class="hljs-params">--with-kubernetes</span> v1.24.17 <br></code></pre></td></tr></table></figure><h4 id="4、执行升级后脚本无反应则手动重启kubelet"><a href="#4、执行升级后脚本无反应则手动重启kubelet" class="headerlink" title="4、执行升级后脚本无反应则手动重启kubelet"></a>4、执行升级后脚本无反应则手动重启kubelet</h4><figure class="highlight ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs ebnf"><span class="hljs-attribute">systemctl restart kubelet</span> <br></code></pre></td></tr></table></figure><h4 id="5、完成，检查升级结果"><a href="#5、完成，检查升级结果" class="headerlink" title="5、完成，检查升级结果"></a>5、完成，检查升级结果</h4><ul><li>kubelet get node（查看node version）</li><li>查看env是否更新<figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs awk"><span class="hljs-regexp">/var/</span>lib<span class="hljs-regexp">/kubelet/</span>kubeadm-flags.env<br></code></pre></td></tr></table></figure></li><li>kubectl edit node node1 （手动更新node-cri-socket注解）<figure class="highlight crmsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs crmsh">kubectl patch <span class="hljs-keyword">node</span> <span class="hljs-title">&lt;NODE_NAME</span>&gt; -p &#x27;&#123;<span class="hljs-string">&quot;metadata&quot;</span>: &#123;<span class="hljs-string">&quot;annotations&quot;</span>: &#123;<span class="hljs-string">&quot;kubeadm.alpha.kubernetes.io/cri-socket&quot;</span>: <span class="hljs-string">&quot;unix:///var/run/cri-dockerd.sock&quot;</span>&#125;&#125;&#125;&#x27;<br></code></pre></td></tr></table></figure></li><li>kubectl version –short=true</li></ul><h2 id="k8s-1-24-17升级至1-25-16-需升级ks版本3-4-1，否则ks-api不兼容"><a href="#k8s-1-24-17升级至1-25-16-需升级ks版本3-4-1，否则ks-api不兼容" class="headerlink" title="k8s-1.24.17升级至1.25.16 (需升级ks版本3.4.1，否则ks-api不兼容)"></a>k8s-1.24.17升级至1.25.16 (需升级ks版本3.4.1，否则ks-api不兼容)</h2><h4 id="1、升级命令"><a href="#1、升级命令" class="headerlink" title="1、升级命令"></a>1、升级命令</h4><figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli"><span class="hljs-string">./kk</span> upgrade -f config-sample.yaml <span class="hljs-params">--with-kubernetes</span> v1.25.16 <br></code></pre></td></tr></table></figure><h4 id="2、重启kubelet"><a href="#2、重启kubelet" class="headerlink" title="2、重启kubelet"></a>2、重启kubelet</h4><figure class="highlight maxima"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs maxima">systemctl <span class="hljs-built_in">restart</span> kubelet <br>执行升级后脚本无反应则手动重启各个节点kubelet<br></code></pre></td></tr></table></figure><h4 id="3、验证"><a href="#3、验证" class="headerlink" title="3、验证"></a>3、验证</h4><h2 id="k8s-1-25-16升级至1-26-16（同上）"><a href="#k8s-1-25-16升级至1-26-16（同上）" class="headerlink" title="k8s-1.25.16升级至1.26.16（同上）"></a>k8s-1.25.16升级至1.26.16（同上）</h2><h2 id="ks-kubesphere平台版本升级-3-3-1-gt-3-4-1"><a href="#ks-kubesphere平台版本升级-3-3-1-gt-3-4-1" class="headerlink" title="ks-kubesphere平台版本升级(3.3.1&gt;3.4.1)"></a>ks-kubesphere平台版本升级(3.3.1&gt;3.4.1)</h2><h4 id="当前版本：-1"><a href="#当前版本：-1" class="headerlink" title="当前版本："></a>当前版本：</h4><ul><li>k8s版本：1.24.17</li><li>kubesphere版本：v3.3.1 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs lua">升级ks版本 （修改<span class="hljs-built_in">config</span>-sample.yaml k8s版本为当前集群版本<span class="hljs-number">1.26</span><span class="hljs-number">.5</span>）<br>./kk upgrade -f <span class="hljs-built_in">config</span>-sample.yaml <span class="hljs-comment">--with-kubesphere v3.4.1</span><br></code></pre></td></tr></table></figure></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>k8s</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
       <tag>k8s升级</tag>
+      
+      <tag>kubevsphere</tag>
+      
+      <tag>k8s</tag>
       
     </tags>
     
