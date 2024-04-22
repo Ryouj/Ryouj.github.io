@@ -16,15 +16,15 @@
   <meta name="author" content="Ryouj">
   <meta name="keywords" content="">
   
-    <meta name="description" content="构建各平台的镜像并推送多平台清单 先分别构建 ARM 和 AMD64 平台的镜像，推送到仓库后 使用docker manifest 命令创建一个多平台镜像清单  12docker manifest create harbor-ops.itseeds.com&#x2F;base&#x2F;openjdk:17-alpine-env harbor-ops.itseeds.com&#x2F;base&#x2F;openjdk:17-alpin">
+    <meta name="description" content="- docker之buildx跨平台编译镜像 下载buildx二进制文件  12345下载二进制buildxhttps:&#x2F;&#x2F;github.com&#x2F;docker&#x2F;buildx&#x2F;tree&#x2F;v0.10.4$ mkdir -p ~&#x2F;.docker&#x2F;cli-plugins$ mv buildx ~&#x2F;.docker&#x2F;cli-plugins&#x2F;docker-buildx   buildx命令测试  1docker">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Docker-buildx构建多平台镜像并合并推送清单">
-<meta property="og:url" content="https://ryouj.itseeds.top/2024/04/22/Docker-buildx%E6%9E%84%E5%BB%BA%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%B9%B6%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/index.html">
+<meta property="og:title" content="docker之buildx跨平台编译镜像.md">
+<meta property="og:url" content="https://ryouj.itseeds.top/2024/04/22/docker%E4%B9%8Bbuildx%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91%E9%95%9C%E5%83%8F/index.html">
 <meta property="og:site_name" content="枫の忆">
-<meta property="og:description" content="构建各平台的镜像并推送多平台清单 先分别构建 ARM 和 AMD64 平台的镜像，推送到仓库后 使用docker manifest 命令创建一个多平台镜像清单  12docker manifest create harbor-ops.itseeds.com&#x2F;base&#x2F;openjdk:17-alpine-env harbor-ops.itseeds.com&#x2F;base&#x2F;openjdk:17-alpin">
+<meta property="og:description" content="- docker之buildx跨平台编译镜像 下载buildx二进制文件  12345下载二进制buildxhttps:&#x2F;&#x2F;github.com&#x2F;docker&#x2F;buildx&#x2F;tree&#x2F;v0.10.4$ mkdir -p ~&#x2F;.docker&#x2F;cli-plugins$ mv buildx ~&#x2F;.docker&#x2F;cli-plugins&#x2F;docker-buildx   buildx命令测试  1docker">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-04-22T09:59:33.000Z">
-<meta property="article:modified_time" content="2024-04-22T10:02:17.257Z">
+<meta property="article:modified_time" content="2024-04-22T10:07:25.891Z">
 <meta property="article:author" content="Ryouj">
 <meta property="article:tag" content="buildx">
 <meta property="article:tag" content="cicd">
@@ -32,7 +32,7 @@
   
   
   
-  <title>Docker-buildx构建多平台镜像并合并推送清单 - 枫の忆</title>
+  <title>docker之buildx跨平台编译镜像.md - 枫の忆</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -198,7 +198,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Docker-buildx构建多平台镜像并合并推送清单"></span>
+            <span id="subtitle" data-typed-text="docker之buildx跨平台编译镜像.md"></span>
           
         </div>
 
@@ -221,7 +221,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          319 字
+          1.3k 字
         
       </span>
     
@@ -232,7 +232,7 @@
         
         
         
-          3 分钟
+          12 分钟
         
       </span>
     
@@ -270,16 +270,36 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">Docker-buildx构建多平台镜像并合并推送清单</h1>
+            <h1 style="display: none">docker之buildx跨平台编译镜像.md</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="构建各平台的镜像并推送多平台清单"><a href="#构建各平台的镜像并推送多平台清单" class="headerlink" title="构建各平台的镜像并推送多平台清单"></a>构建各平台的镜像并推送多平台清单</h2><ul>
-<li>先分别构建 ARM 和 AMD64 平台的镜像，推送到仓库后</li>
-<li>使用docker manifest 命令创建一个多平台镜像清单</li>
+                <p>-</p>
+<h2 id="docker之buildx跨平台编译镜像"><a href="#docker之buildx跨平台编译镜像" class="headerlink" title="docker之buildx跨平台编译镜像"></a>docker之buildx跨平台编译镜像</h2><ul>
+<li>下载buildx二进制文件</li>
 </ul>
-<figure class="highlight gradle"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs gradle">docker manifest create harbor-ops.itseeds.com<span class="hljs-regexp">/base/</span>openjdk:<span class="hljs-number">17</span>-alpine-env harbor-ops.itseeds.com<span class="hljs-regexp">/base/</span>openjdk:<span class="hljs-number">17</span>-alpine-env-amd64 harbor-ops.itseeds.com<span class="hljs-regexp">/base/</span>openjdk:<span class="hljs-number">17</span>-alpine-env-arm64<br>docker manifest <span class="hljs-keyword">push</span> harbor-ops.itseeds.com<span class="hljs-regexp">/base/</span>openjdk:<span class="hljs-number">17</span>-alpine-env<br></code></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs python">下载二进制buildx<br>https://github.com/docker/buildx/tree/v0<span class="hljs-number">.10</span><span class="hljs-number">.4</span><br><br>$ mkdir -p ~/.docker/cli-plugins<br>$ mv buildx ~/.docker/cli-plugins/docker-buildx<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>buildx命令测试</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">docker buildx build .<br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>创建 <code>builder</code></strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python">启动 builder<br>docker buildx create --name mybuilder<br><br><span class="hljs-number">1.</span> 查看 mybuilder 的构建平台支持情况:<br>docker buildx inspect mybuilder<br>如果未包含 linux/arm64,需要添加该平台支持。<br><span class="hljs-number">2.</span> 修改 mybuilder,添加 linux/arm64 支持:<br>docker buildx create --name mybuilder --platform linux/amd64,linux/arm64<br><span class="hljs-number">3.</span> 如果主机本身不支持 linux/arm64,需要启用 buildkit 模式与远程 docker 引擎集成,在创建时指定:<br>docker buildx create --name mybuilder --use --platform linux/amd64,linux/arm64  --buildkitd-flags <span class="hljs-string">&quot;--allow-insecure-entitlement security.insecure&quot;</span><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li>启动 <strong><code>builder</code></strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs python">docker buildx inspect --bootstrap mybuilder<br><br>查看<br>docker buildx ls<br><br>其中 PLATFORMS 一列所展示的值 linux/arm64, linux/amd64, linux/riscv64, linux/ppc64le, linux/s390x, linux/<span class="hljs-number">386</span>, linux/mips64le, linux/mips64, linux/arm/v7, linux/arm/v6 就是当前构建器所支持的所有平台了。<br><br></code></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>使用 <code>builder</code> 构建跨平台镜像</strong></li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><code class="hljs python"><br>docker buildx use mybuilder<br><br>docker buildx build --platform linux/arm64,linux/amd64 -t registry.vpcflow.com/snapshot/gateway-web:<span class="hljs-number">20230810181025</span>-master-<span class="hljs-number">3.1</span>-c718fe48 .<br><br><span class="hljs-number">1.</span> 没有在 docker buildx build 命令中指定 --push、`--load` 或者 --output 参数。<br><span class="hljs-number">2.</span> 使用了 docker-container 驱动,这个驱动默认不会输出镜像。<br>要解决这个问题,可以:<br><span class="hljs-number">1.</span> 加上 --load 参数,构建完成后会把镜像加载到本地 Docker:<br>docker buildx build --load <br><span class="hljs-number">2.</span> 加上 --push 参数,把镜像推送到远程仓库:<br>docker buildx build --push<br> <br><span class="hljs-number">3.</span> 使用 --output 参数导出镜像到本地文件:<br>docker buildx build --output=image.tar<br></code></pre></td></tr></table></figure>
                 
               </div>
             
@@ -326,8 +346,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Docker-buildx构建多平台镜像并合并推送清单</div>
-      <div>https://ryouj.itseeds.top/2024/04/22/Docker-buildx构建多平台镜像并合并推送清单/</div>
+      <div>docker之buildx跨平台编译镜像.md</div>
+      <div>https://ryouj.itseeds.top/2024/04/22/docker之buildx跨平台编译镜像/</div>
     </div>
     <div class="license-meta">
       
@@ -370,6 +390,12 @@
                 <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
+                    
+                      <a href="/2024/04/22/docker%E4%B9%8Bmanifest%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/" title="docker之manifest多平台镜像合并推送清单">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">docker之manifest多平台镜像合并推送清单</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
                     
                   </article>
                   <article class="post-next col-6">
