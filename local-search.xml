@@ -4,6 +4,118 @@
   
   
   <entry>
+    <title>k8s之集群容量</title>
+    <link href="/2024/04/22/k8s%E4%B9%8B%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%87%8F/"/>
+    <url>/2024/04/22/k8s%E4%B9%8B%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%87%8F/</url>
+    
+    <content type="html"><![CDATA[<h3 id="k8s之集群容量"><a href="#k8s之集群容量" class="headerlink" title="k8s之集群容量"></a>k8s之集群容量</h3><ul><li><p>1、K8S集群中，所有pod都应该设置request数值。否则资源利用率统计很不准。</p></li><li><p>2、资源不够的时候，没有设置request和limit的pod最先被驱逐，其次是request&lt;limit的pod被驱逐，最后是request=limit的pod被驱逐。</p></li><li><p>3、集群在使用中，有的资源允许压缩使用，有的不成。CPU、网络I/O可以；内存和磁盘空间不建议。但很多时候pod并不是同时使用，因此稍有有一些超额分配是可以的，可以在limitrange中的maxLimitRequestRatio设置百分比。当然，这个百分比要通过测试实现。也就是说，当资源不够的时候，pod会被驱逐，根据你能接受的驱逐pod的频率，设置评定当时的超分率。当然，超额使用的设置还和每个namespace的qouta的设置有关。从集群角度看，K8S整体的qouta可以大于整体的可提资源。</p></li><li><p>4、K8S节点会预留资源，主要分为两部分Kube-reserved, system-reserved。当资源利用率超过的可分配资源时（开始侵占预留资源），K8S开始驱逐内存。K8S驱逐pod的阈值可以设置，也就是说，当节点的资源少于多少的时候，开始驱逐pod。</p></li><li><p>5、容量规划主要是对比request资源和实际使用率。根据实际使用率的上浮下浮20%，我们设定资源的上限、下限预估值。低估造成资源不够，高估造成资源浪费。如果出现高估，可以减少request，limit不变，让request&lt; limit。如果出现了低估，那降低limit，让request=limit。</p></li><li><p>6、在集群规模的评估时，如果资源使用率超过80%，则建议增加K8S集群的节点。如果资源利用率低于40%，并且在公有云上，可以考虑缩减集群规模。但在私有云的生产环境则没有必要这样做。</p></li></ul>]]></content>
+    
+    
+    <categories>
+      
+      <category>k8s</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>K8S规划</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>K8S网络之coredns配置外部DNS转发</title>
+    <link href="/2024/04/03/K8S%E7%BD%91%E7%BB%9C%E4%B9%8Bcoredns%E9%85%8D%E7%BD%AE%E5%A4%96%E9%83%A8DNS%E8%BD%AC%E5%8F%91/"/>
+    <url>/2024/04/03/K8S%E7%BD%91%E7%BB%9C%E4%B9%8Bcoredns%E9%85%8D%E7%BD%AE%E5%A4%96%E9%83%A8DNS%E8%BD%AC%E5%8F%91/</url>
+    
+    <content type="html"><![CDATA[<h1 id="K8S网络之coredns配置外部DNS转发"><a href="#K8S网络之coredns配置外部DNS转发" class="headerlink" title="K8S网络之coredns配置外部DNS转发"></a>K8S网络之coredns配置外部DNS转发</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">kubectl edit configmap coredns -n kube-system<br></code></pre></td></tr></table></figure><figure class="highlight clojure"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs clojure">Corefile: |<br>  .:<span class="hljs-number">53</span> &#123;<br>      errors<br>      health<br>      kubernetes cluster.local in-addr.arpa ip6.arpa &#123;<br>         pods insecure<br>         upstream<br>         fallthrough in-addr.arpa ip6.arpa<br>      &#125;<br>      prometheus :<span class="hljs-number">9153</span><br>      forward . /etc/resolv.conf<br>      cache <span class="hljs-number">30</span><br>      loop<br>      reload<br>      loadbalance<br>  &#125;<br>  hzcngb.com:<span class="hljs-number">53</span> &#123;<br>      errors<br>      cache <span class="hljs-number">30</span><br>      forward . <span class="hljs-number">172.16</span>.200.18<br>  &#125;<br></code></pre></td></tr></table></figure><ul><li>error: 错误记录到stdout</li><li><a href="https://coredns.io/plugins/health/">health</a> ：CoreDNS的运行状况报告为 <a href="http://localhost:8080/health">http：// localhost：8080 / health</a></li><li><a href="https://coredns.io/plugins/kubernetes/">kubernetes</a> ：CoreDNS将根据Kubernetes服务和pod的IP回复DNS查询</li><li><a href="https://coredns.io/plugins/prometheus/">prometheus</a> ：CoreDNS的度量标准可以在 <a href="http://localhost:9153/metrics">http://localhost:9153/</a> Prometheus格式的 <a href="https://prometheus.io/">指标</a> 中找到</li><li><a href="https://coredns.io/plugins/proxy/">proxy</a> ：任何不在Kubernetes集群域内的查询都将转发到预定义的解析器（/etc/resolv.conf）</li><li><a href="https://coredns.io/plugins/cache/">cache</a> ：启用前端缓存</li><li><a href="https://coredns.io/plugins/loop/">loop</a> ：检测简单的转发循环，如果找到循环则停止CoreDNS进程</li><li><a href="https://coredns.io/plugins/reload">reload</a> ：允许自动重新加载已更改的Corefile。编辑ConfigMap配置后，请等待两分钟以使更改生效</li><li><a href="https://coredns.io/plugins/loadbalance">loadbalance</a> ：这是一个循环DNS负载均衡器，可以在答案中随机化A，AAAA和MX记录的顺序</li></ul><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 应用configmap到coredns</span><br>kubectl scale deployment coredns -n kube-system --replicas=0<br>kubectl scale deployment coredns -n kube-system --replicas=2<br><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>k8s</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>K8S网络</tag>
+      
+      <tag>nfs</tag>
+      
+      <tag>dns</tag>
+      
+      <tag>coredns</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>K8S集群网络之打通办公网络</title>
+    <link href="/2024/04/03/K8S%E7%BD%91%E7%BB%9C%E4%B9%8B%E9%9B%86%E7%BE%A4%E7%BD%91%E7%BB%9C%E5%8A%9E%E5%85%AC%E7%BD%91%E7%BB%9C%E4%BA%92%E8%81%94/"/>
+    <url>/2024/04/03/K8S%E7%BD%91%E7%BB%9C%E4%B9%8B%E9%9B%86%E7%BE%A4%E7%BD%91%E7%BB%9C%E5%8A%9E%E5%85%AC%E7%BD%91%E7%BB%9C%E4%BA%92%E8%81%94/</url>
+    
+    <content type="html"><![CDATA[<h1 id="K8S集群网络之打通办公网络"><a href="#K8S集群网络之打通办公网络" class="headerlink" title="K8S集群网络之打通办公网络"></a>K8S集群网络之打通办公网络</h1><p>办公区网段 192.168.10.0/23</p><p>测试服务器网段 192.168.0.0/24</p><p>K8S群集PODS网段 100.64.0.0/10</p><p>K8S SVC 网段10.96.0.0/12。</p><p>任意选择一台K8S node节点 IP：192.168.0.204/32</p><h3 id="服务器操作"><a href="#服务器操作" class="headerlink" title="服务器操作"></a>服务器操作</h3><p>开启内核转发</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">vim /etc/sysctl.conf<br>net.ipv4.ip_forward = 1<br>sysctl -p<br></code></pre></td></tr></table></figure><p>设置SNAT：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs bash">iptables -t nat -A POSTROUTING -s 172.16.20.0/23 -d 100.64.0.0/10 -j MASQUERADE<br>iptables -t nat -A POSTROUTING -s 172.16.20.0/23 -d 10.96.0.0/12 -j MASQUERADE<br>iptables -t nat -A POSTROUTING -s 172.16.30.0/24 -d 100.64.0.0/10 -j MASQUERADE<br>iptables -t nat -A POSTROUTING -s 172.16.30.0/24 -d 10.96.0.0/12 -j MASQUERADE<br></code></pre></td></tr></table></figure><p>三层交换机上设置路由条目：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">$ sys<br>$ ip route-static 100.64.0.0 255.192.0.0 172.16.200.224<br>$ ip route-static 100.96.0.0 255.240.0.0 172.16.200.224<br></code></pre></td></tr></table></figure><p>iptables -t nat -A POSTROUTING -s 192.168.10.0/23 -d 100.64.0.0/10 -j MASQUERADE</p><p>192.168.0.204</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">iptables -t nat -A POSTROUTING -s <span class="hljs-number">192.168</span><span class="hljs-number">.10</span><span class="hljs-number">.0</span>/<span class="hljs-number">23</span> -d <span class="hljs-number">100.64</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>/<span class="hljs-number">10</span> -j MASQUERADE<br>iptables -t nat -A POSTROUTING -s <span class="hljs-number">192.168</span><span class="hljs-number">.10</span><span class="hljs-number">.0</span>/<span class="hljs-number">23</span> -d <span class="hljs-number">100.64</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>/<span class="hljs-number">10</span> -j MASQUERADE<br>iptables -t nat -A POSTROUTING -s <span class="hljs-number">192.168</span><span class="hljs-number">.10</span><span class="hljs-number">.0</span>/<span class="hljs-number">23</span> -d <span class="hljs-number">10.96</span><span class="hljs-number">.0</span><span class="hljs-number">.0</span>/<span class="hljs-number">12</span> -j MASQUERADE<br>iptables-save<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>k8s</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>K8S网络</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>k8s存储之动态PVC+StorageClass+NFS</title>
+    <link href="/2024/04/03/k8s%E5%AD%98%E5%82%A8%E4%B9%8B%E5%8A%A8%E6%80%81PVC-StorageClass-NFS/"/>
+    <url>/2024/04/03/k8s%E5%AD%98%E5%82%A8%E4%B9%8B%E5%8A%A8%E6%80%81PVC-StorageClass-NFS/</url>
+    
+    <content type="html"><![CDATA[<h1 id="k8s存储之动态PVC-StorageClass-NFS"><a href="#k8s存储之动态PVC-StorageClass-NFS" class="headerlink" title="k8s存储之动态PVC+StorageClass+NFS"></a>k8s存储之动态PVC+StorageClass+NFS</h1><h3 id="动态pvc-StorageClass-NFS"><a href="#动态pvc-StorageClass-NFS" class="headerlink" title="动态pvc StorageClass+NFS"></a><strong><a href="https://www.cnblogs.com/lidong94/p/14518362.html">动态pvc StorageClass+NFS</a></strong></h3><p><strong>StorageClass</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">要使用 StorageClass，我们就得安装对应的自动配置程序，比如我们这里存储后端使用的是 nfs，那么我们就需要使用到一个 nfs-client 的自动配置程序，我们也叫它 Provisioner，这个程序使用我们已经配置好的 nfs 服务器，来自动创建持久卷，也就是自动帮我们创建 PV。<br></code></pre></td></tr></table></figure><figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">1</span>.自动创建的PV以<span class="hljs-variable">$&#123;namespace&#125;</span>-<span class="hljs-variable">$&#123;pvcName&#125;</span>-<span class="hljs-variable">$&#123;pvName&#125;</span>这样的命名格式创建在NFS服务器上的共享数据目录中<br><span class="hljs-attribute">2</span>.而当这个PV被回收后会以archieved-<span class="hljs-variable">$&#123;namespace&#125;</span>-<span class="hljs-variable">$&#123;pvcName&#125;</span>-<span class="hljs-variable">$&#123;pvName&#125;</span>这样的命名格式存在 NFS 服务器上。<br></code></pre></td></tr></table></figure><p>一、<strong>创建StorageClass</strong></p><p>确保当前有<strong>NFS server及共享目录信息</strong></p><p><strong>rbac.yaml</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><code class="hljs python">apiVersion: v1<br>kind: ServiceAccount<br>metadata:<br>  name: nfs-client-provisioner<br>  namespace: default<br>---<br>kind: ClusterRole<br>apiVersion: rbac.authorization.k8s.io/v1<br>metadata:<br>  name: nfs-client-provisioner-runner<br>rules:<br>  - apiGroups: [<span class="hljs-string">&quot;&quot;</span>]<br>    resources: [<span class="hljs-string">&quot;persistentvolumes&quot;</span>]<br>    verbs: [<span class="hljs-string">&quot;get&quot;</span>, <span class="hljs-string">&quot;list&quot;</span>, <span class="hljs-string">&quot;watch&quot;</span>, <span class="hljs-string">&quot;create&quot;</span>, <span class="hljs-string">&quot;delete&quot;</span>]<br>  - apiGroups: [<span class="hljs-string">&quot;&quot;</span>]<br>    resources: [<span class="hljs-string">&quot;persistentvolumeclaims&quot;</span>]<br>    verbs: [<span class="hljs-string">&quot;get&quot;</span>, <span class="hljs-string">&quot;list&quot;</span>, <span class="hljs-string">&quot;watch&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>]<br>  - apiGroups: [<span class="hljs-string">&quot;storage.k8s.io&quot;</span>]<br>    resources: [<span class="hljs-string">&quot;storageclasses&quot;</span>]<br>    verbs: [<span class="hljs-string">&quot;get&quot;</span>, <span class="hljs-string">&quot;list&quot;</span>, <span class="hljs-string">&quot;watch&quot;</span>]<br>  - apiGroups: [<span class="hljs-string">&quot;&quot;</span>]<br>    resources: [<span class="hljs-string">&quot;events&quot;</span>]<br>    verbs: [<span class="hljs-string">&quot;create&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;patch&quot;</span>]<br>---<br>kind: ClusterRoleBinding<br>apiVersion: rbac.authorization.k8s.io/v1<br>metadata:<br>  name: run-nfs-client-provisioner<br>subjects:<br>  - kind: ServiceAccount<br>    name: nfs-client-provisioner<br>    namespace: default<br>roleRef:<br>  kind: ClusterRole<br>  name: nfs-client-provisioner-runner<br>  apiGroup: rbac.authorization.k8s.io<br>---<br>kind: Role<br>apiVersion: rbac.authorization.k8s.io/v1<br>metadata:<br>  name: leader-locking-nfs-client-provisioner<br>  namespace: default<br>rules:<br>  - apiGroups: [<span class="hljs-string">&quot;&quot;</span>]<br>    resources: [<span class="hljs-string">&quot;endpoints&quot;</span>]<br>    verbs: [<span class="hljs-string">&quot;get&quot;</span>, <span class="hljs-string">&quot;list&quot;</span>, <span class="hljs-string">&quot;watch&quot;</span>, <span class="hljs-string">&quot;create&quot;</span>, <span class="hljs-string">&quot;update&quot;</span>, <span class="hljs-string">&quot;patch&quot;</span>]<br>---<br>kind: RoleBinding<br>apiVersion: rbac.authorization.k8s.io/v1<br>metadata:<br>  name: leader-locking-nfs-client-provisioner<br>subjects:<br>  - kind: ServiceAccount<br>    name: nfs-client-provisioner<br>    namespace: default<br>roleRef:<br>  kind: Role<br>  name: leader-locking-nfs-client-provisioner<br>  apiGroup: rbac.authorization.k8s.io<br></code></pre></td></tr></table></figure><p><strong>nfs-StorageClass.yaml</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs python">apiVersion: storage.k8s.io/v1<br>kind: StorageClass<br>metadata:<br>  name: managed-nfs-storage<br>  annotations:<br>    storageclass.kubernetes.io/<span class="hljs-keyword">is</span>-default-<span class="hljs-keyword">class</span>: <span class="hljs-string">&quot;true&quot;</span><br>provisioner: nfs-storage <br>parameters: <br>  archiveOnDelete: <span class="hljs-string">&quot;false&quot;</span><br><br><span class="hljs-comment">#这里的名称要和provisioner配置文件中的环境变量PROVISIONER_NAME保持一致</span><br></code></pre></td></tr></table></figure><p><strong>nfs-provisioner.yaml</strong></p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><code class="hljs python">apiVersion: apps/v1<br>kind: Deployment<br>metadata:<br>  name: nfs-client-provisioner<br>  labels:<br>    app: nfs-client-provisioner<br>  namespace: default<br>spec:<br>  replicas: <span class="hljs-number">1</span><br>  selector:<br>    matchLabels:<br>      app: nfs-client-provisioner<br>  strategy:<br>    <span class="hljs-built_in">type</span>: Recreate<br>  selector:<br>    matchLabels:<br>      app: nfs-client-provisioner<br>  template:<br>    metadata:<br>      labels:<br>        app: nfs-client-provisioner<br>    spec:<br>      serviceAccountName: nfs-client-provisioner<br>      containers:<br>        - name: nfs-client-provisioner<br>          image: quay.io/external_storage/nfs-client-provisioner:latest<br>          volumeMounts:<br>            - name: nfs-client-root<br>              mountPath: /persistentvolumes<br>          env:<br>            - name: PROVISIONER_NAME<br>              value: nfs-storage<br>            - name: NFS_SERVER<br>              value: <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.213</span><br>            - name: NFS_PATH  <br>              value: /data/nfs<br>      volumes:<br>        - name: nfs-client-root<br>          nfs:<br>            server: <span class="hljs-number">192.168</span><span class="hljs-number">.0</span><span class="hljs-number">.213</span><br>            path: /data/nfs<br></code></pre></td></tr></table></figure><h3 id="配置默认sc"><a href="#配置默认sc" class="headerlink" title="配置默认sc"></a>配置默认sc</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">DEFAULT_STORAGE_CLASS=$(kubectl get storageclass -o=jsonpath=<span class="hljs-string">&#x27;&#123;.items[?(@.metadata.annotations.storageclass\.kubernetes\.io/is-default-class==&quot;true&quot;)].metadata.name&#125;&#x27;</span>)<br>kubectl patch storageclass <span class="hljs-string">&quot;$DEFAULT_STORAGE_CLASS&quot;</span> -p <span class="hljs-string">&#x27;&#123;&quot;allowVolumeExpansion&quot;: true&#125;&#x27;</span><br></code></pre></td></tr></table></figure><h3 id="修改注解"><a href="#修改注解" class="headerlink" title="修改注解"></a>修改注解</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs python">kubectl patch storageclass $DEFAULT_STORAGE_CLASS<span class="hljs-string">&quot; -p &#x27;&#123;&quot;</span>metadata<span class="hljs-string">&quot;: &#123;&quot;</span>annotations<span class="hljs-string">&quot;:&#123;&quot;</span>storageclass.kubernetes.io/<span class="hljs-keyword">is</span>-default-<span class="hljs-keyword">class</span><span class="hljs-string">&quot;:&quot;</span>true<span class="hljs-string">&quot;&#125;&#125;&#125;&#x27;</span><br><span class="hljs-string"></span><br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    <categories>
+      
+      <category>k8s</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>k8s存储</tag>
+      
+      <tag>pvc</tag>
+      
+      <tag>nfs</tag>
+      
+      <tag>StorageClass</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>kubevsphere之ks平台部署</title>
     <link href="/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/"/>
     <url>/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/</url>

@@ -226,6 +226,262 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2024/04/22/k8s%E4%B9%8B%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%87%8F/" target="_self">
+          k8s之集群容量
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/22/k8s%E4%B9%8B%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%87%8F/" target="_self">
+        <div>
+          k8s之集群容量 1、K8S集群中，所有pod都应该设置request数值。否则资源利用率统计很不准。  2、资源不够的时候，没有设置request和limit的pod最先被驱逐，其次是request&lt;limit的pod被驱逐，最后是request=limit的pod被驱逐。  3、集群在使用中，有的资源允许压缩使用，有的不成。CPU、网络I/O可以；内存和磁盘空间不建议。但很多时候pod并
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-22 17:28" pubdate>
+              2024-04-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/K8S%E8%A7%84%E5%88%92/">#K8S规划</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/04/03/K8S%E7%BD%91%E7%BB%9C%E4%B9%8Bcoredns%E9%85%8D%E7%BD%AE%E5%A4%96%E9%83%A8DNS%E8%BD%AC%E5%8F%91/" target="_self">
+          K8S网络之coredns配置外部DNS转发
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/03/K8S%E7%BD%91%E7%BB%9C%E4%B9%8Bcoredns%E9%85%8D%E7%BD%AE%E5%A4%96%E9%83%A8DNS%E8%BD%AC%E5%8F%91/" target="_self">
+        <div>
+          K8S网络之coredns配置外部DNS转发1kubectl edit configmap coredns -n kube-system  123456789101112131415161718192021Corefile: |  .:53 &#123;      errors      health      kubernetes cluster.local in-addr.arpa ip6.a
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-03 17:15" pubdate>
+              2024-04-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/K8S%E7%BD%91%E7%BB%9C/">#K8S网络</a>
+            
+              <a href="/tags/nfs/">#nfs</a>
+            
+              <a href="/tags/dns/">#dns</a>
+            
+              <a href="/tags/coredns/">#coredns</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/04/03/K8S%E7%BD%91%E7%BB%9C%E4%B9%8B%E9%9B%86%E7%BE%A4%E7%BD%91%E7%BB%9C%E5%8A%9E%E5%85%AC%E7%BD%91%E7%BB%9C%E4%BA%92%E8%81%94/" target="_self">
+          K8S集群网络之打通办公网络
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/03/K8S%E7%BD%91%E7%BB%9C%E4%B9%8B%E9%9B%86%E7%BE%A4%E7%BD%91%E7%BB%9C%E5%8A%9E%E5%85%AC%E7%BD%91%E7%BB%9C%E4%BA%92%E8%81%94/" target="_self">
+        <div>
+          K8S集群网络之打通办公网络办公区网段 192.168.10.0/23 测试服务器网段 192.168.0.0/24 K8S群集PODS网段 100.64.0.0/10 K8S SVC 网段10.96.0.0/12。 任意选择一台K8S node节点 IP：192.168.0.204/32 服务器操作开启内核转发 123vim /etc/sysctl.confnet.ipv4.ip_forward
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-03 17:14" pubdate>
+              2024-04-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/K8S%E7%BD%91%E7%BB%9C/">#K8S网络</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/04/03/k8s%E5%AD%98%E5%82%A8%E4%B9%8B%E5%8A%A8%E6%80%81PVC-StorageClass-NFS/" target="_self">
+          k8s存储之动态PVC+StorageClass+NFS
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/03/k8s%E5%AD%98%E5%82%A8%E4%B9%8B%E5%8A%A8%E6%80%81PVC-StorageClass-NFS/" target="_self">
+        <div>
+          k8s存储之动态PVC+StorageClass+NFS动态pvc StorageClass+NFSStorageClass 1要使用 StorageClass，我们就得安装对应的自动配置程序，比如我们这里存储后端使用的是 nfs，那么我们就需要使用到一个 nfs-client 的自动配置程序，我们也叫它 Provisioner，这个程序使用我们已经配置好的 nfs 服务器，来自动创建持久卷，也就
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-03 17:13" pubdate>
+              2024-04-03
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s%E5%AD%98%E5%82%A8/">#k8s存储</a>
+            
+              <a href="/tags/pvc/">#pvc</a>
+            
+              <a href="/tags/nfs/">#nfs</a>
+            
+              <a href="/tags/StorageClass/">#StorageClass</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/" target="_self">
           kubevsphere之ks平台部署
         </a>
