@@ -226,15 +226,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/04/22/docker%E4%B9%8Bmanifest%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/" target="_self">
-          docker之manifest多平台镜像合并推送清单
+        <a href="/2024/05/21/CICD%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E4%B9%8Bkuebdp/" target="_self">
+          CICD开发实战之kuebdp
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/22/docker%E4%B9%8Bmanifest%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/05/21/CICD%E5%BC%80%E5%8F%91%E5%AE%9E%E6%88%98%E4%B9%8Bkuebdp/" target="_self">
         <div>
-          构建各平台的镜像并推送多平台清单 先分别构建 ARM 和 AMD64 平台的镜像，推送到仓库后 使用docker manifest 命令创建一个多平台镜像清单  12docker manifest create harbor-ops.itseeds.com/base/openjdk:17-alpine-env harbor-ops.itseeds.com/base/openjdk:17-alpin
+          前言  某政务云环境网络不通，无法直接连k8s进行服务更新，所以造了个go轮子结合jenkins做cicd需求 编写kubedp服务，通过client-go更新k8s服务镜像 集群部署kubedp服务，映射接口到外网 编写jenkinsfile调用kubedp实现cicd一、kubedp编写  1234567891011121314151617181920212223242526272829303
         </div>
       </a>
 
@@ -242,8 +242,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2024-04-22 17:59" pubdate>
-              2024-04-22
+            <time datetime="2024-05-21 18:04" pubdate>
+              2024-05-21
             </time>
           </div>
         
@@ -258,8 +258,22 @@
     
       <span class="category-chain">
         
-  <a href="/categories/docker/" class="category-chain-item">docker</a>
+  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/k8s/go/" class="category-chain-item">go</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/k8s/go/cicd/" class="category-chain-item">cicd</a>
+  
+  
+
+  
+
   
 
       </span>
@@ -273,9 +287,13 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/buildx/">#buildx</a>
-            
               <a href="/tags/cicd/">#cicd</a>
+            
+              <a href="/tags/go/">#go</a>
+            
+              <a href="/tags/k8s/">#k8s</a>
+            
+              <a href="/tags/kubedp/">#kubedp</a>
             
           </div>
         
@@ -290,7 +308,7 @@
       <h1 class="index-header">
         
         <a href="/2024/04/22/docker%E4%B9%8Bbuildx%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91%E9%95%9C%E5%83%8F/" target="_self">
-          docker之buildx跨平台编译镜像.md
+          Docker之Buildx跨平台编译镜像.md
         </a>
       </h1>
 
@@ -336,9 +354,72 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
+              <a href="/tags/cicd/">#cicd</a>
+            
               <a href="/tags/buildx/">#buildx</a>
             
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
+        <a href="/2024/04/22/docker%E4%B9%8Bmanifest%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/" target="_self">
+          Docker之Manifest多平台镜像合并推送清单
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/22/docker%E4%B9%8Bmanifest%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/" target="_self">
+        <div>
+          构建各平台的镜像并推送多平台清单 先分别构建 ARM 和 AMD64 平台的镜像，推送到仓库后 使用docker manifest 命令创建一个多平台镜像清单  12docker manifest create harbor-ops.itseeds.com/base/openjdk:17-alpine-env harbor-ops.itseeds.com/base/openjdk:17-alpin
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-04-22 17:59" pubdate>
+              2024-04-22
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/docker/" class="category-chain-item">docker</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
               <a href="/tags/cicd/">#cicd</a>
+            
+              <a href="/tags/buildx/">#buildx</a>
             
           </div>
         
@@ -353,7 +434,7 @@
       <h1 class="index-header">
         
         <a href="/2024/04/22/KubeSpray%E9%83%A8%E7%BD%B2k8s%E9%9B%86%E7%BE%A4/" target="_self">
-          ansible-kubeSpray部署k8s集群
+          Ansible-KubeSpray部署k8s集群
         </a>
       </h1>
 
@@ -430,7 +511,7 @@
       <h1 class="index-header">
         
         <a href="/2024/04/22/k8s%E4%B9%8B%E9%9B%86%E7%BE%A4%E5%AE%B9%E9%87%8F/" target="_self">
-          k8s之集群容量
+          K8S之集群容量
         </a>
       </h1>
 
@@ -498,7 +579,7 @@
       
       <a class="index-excerpt index-excerpt__noimg" href="/2024/04/03/K8S%E7%BD%91%E7%BB%9C%E4%B9%8Bcoredns%E9%85%8D%E7%BD%AE%E5%A4%96%E9%83%A8DNS%E8%BD%AC%E5%8F%91/" target="_self">
         <div>
-          K8S网络之coredns配置外部DNS转发1kubectl edit configmap coredns -n kube-system  123456789101112131415161718192021Corefile: |  .:53 &#123;      errors      health      kubernetes cluster.local in-addr.arpa ip6.a
+          k8s网络之coredns配置外部DNS转发1kubectl edit configmap coredns -n kube-system  123456789101112131415161718192021Corefile: |  .:53 &#123;      errors      health      kubernetes cluster.local in-addr.arpa ip6.a
         </div>
       </a>
 
@@ -539,9 +620,9 @@
             
               <a href="/tags/K8S%E7%BD%91%E7%BB%9C/">#K8S网络</a>
             
-              <a href="/tags/nfs/">#nfs</a>
-            
               <a href="/tags/dns/">#dns</a>
+            
+              <a href="/tags/nfs/">#nfs</a>
             
               <a href="/tags/coredns/">#coredns</a>
             
@@ -619,7 +700,7 @@
       <h1 class="index-header">
         
         <a href="/2024/04/03/k8s%E5%AD%98%E5%82%A8%E4%B9%8B%E5%8A%A8%E6%80%81PVC-StorageClass-NFS/" target="_self">
-          k8s存储之动态PVC+StorageClass+NFS
+          K8S存储之动态PVC+StorageClass+NFS
         </a>
       </h1>
 
@@ -665,11 +746,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
+              <a href="/tags/nfs/">#nfs</a>
+            
               <a href="/tags/k8s%E5%AD%98%E5%82%A8/">#k8s存储</a>
             
               <a href="/tags/pvc/">#pvc</a>
-            
-              <a href="/tags/nfs/">#nfs</a>
             
               <a href="/tags/StorageClass/">#StorageClass</a>
             
@@ -795,72 +876,11 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
+              <a href="/tags/k8s/">#k8s</a>
+            
               <a href="/tags/k8s%E5%8D%87%E7%BA%A7/">#k8s升级</a>
             
               <a href="/tags/kubevsphere/">#kubevsphere</a>
-            
-              <a href="/tags/k8s/">#k8s</a>
-            
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/02/28/%E9%9D%A2%E8%AF%95%E5%88%9D%E6%8E%A2-1/" target="_self">
-          面试初探-1
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/02/28/%E9%9D%A2%E8%AF%95%E5%88%9D%E6%8E%A2-1/" target="_self">
-        <div>
-          前言两年了，心情躁动，虽然大行情不太好，还是忍不住想出来看看，刷新了简历，boss正好有hr主动来约了面试  面试过程1.自我介绍1巴拉巴拉巴拉  2.问运维的服务器数量，平常做哪些系统运维的工作1$  3.有没有做过k8s升级,怎么升级的1$   4.简述下POD的运行过程1$   5.贵公司集群数量，关于流量是怎么做的，东西向，南北向流程。1$   5.贵公司cicd情况介绍1$   6.熟悉
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-02-28 14:50" pubdate>
-              2024-02-28
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/%E9%9D%A2%E8%AF%95/" class="category-chain-item">面试</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
-              <a href="/tags/%E9%9D%A2%E8%AF%95%E7%BB%8F%E9%AA%8C/">#面试经验</a>
             
           </div>
         
