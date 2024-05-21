@@ -24,11 +24,11 @@
 <meta property="og:description" content="前言  某政务云环境网络不通，无法直接连k8s进行服务更新，所以造了个go轮子结合jenkins做cicd需求 编写kubedp服务，通过client-go更新k8s服务镜像 集群部署kubedp服务，映射接口到外网 编写jenkinsfile调用kubedp实现cicd一、kubedp编写  1234567891011121314151617181920212223242526272829303">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2024-05-21T10:04:19.000Z">
-<meta property="article:modified_time" content="2024-05-21T10:28:26.908Z">
+<meta property="article:modified_time" content="2024-05-21T10:31:09.615Z">
 <meta property="article:author" content="Ryouj">
 <meta property="article:tag" content="cicd">
-<meta property="article:tag" content="go">
 <meta property="article:tag" content="k8s">
+<meta property="article:tag" content="go">
 <meta property="article:tag" content="kubedp">
 <meta name="twitter:card" content="summary_large_image">
   
@@ -301,7 +301,7 @@
 <li><p>kubectl apply -f kubedp.yaml</p>
 </li>
 <li><p>完成kubedp部署</p>
-<h3 id="jenkinsfile流水线编写"><a href="#jenkinsfile流水线编写" class="headerlink" title="jenkinsfile流水线编写"></a>jenkinsfile流水线编写</h3></li>
+<h3 id="三、jenkinsfile流水线编写"><a href="#三、jenkinsfile流水线编写" class="headerlink" title="三、jenkinsfile流水线编写"></a>三、jenkinsfile流水线编写</h3></li>
 <li><p>jenkinsfile.groovy</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_">#</span><span class="language-bash">!groovy</span><br><br>@Library(&#x27;jenkinslibrary@master&#x27;) _<br><br>    import org.devops.*<br><br>    def common = new org.devops.common()<br>    def deploy = new org.devops.deploy()<br>    def mytools = new org.devops.tools()<br>    def gitlab = new org.devops.gitlab()<br><br><br>    String profile = &quot;$&#123;env.profile&#125;&quot;<br>    String product = &quot;$&#123;env.product&#125;&quot;<br>    String srvName = &quot;$&#123;env.srvName&#125;&quot;<br>    String imageTag = &quot;$&#123;env.imageTag&#125;&quot;<br><br>    currentBuild.description = &quot;发布产品线: $&#123;product&#125; \n 发布环境: $&#123;profile&#125; \n 服务名: $&#123;srvName&#125; \n 版本: $&#123;imageTag&#125;&quot;<br><br>    pipeline &#123;<br>            <br>        agent &#123; label &#x27;master&#x27; &#125;<br>        <br>        options &#123;<br>            // 并发构建<br>            // disableConcurrentBuilds()<br>            // timeout(time: 1, unit: &#x27;HOURS&#x27;)<br>            timeout(time: 15, unit: &#x27;MINUTES&#x27;)<br>            //保持构建的最大个数<br>            buildDiscarder(logRotator(daysToKeepStr: &#x27;15&#x27;, numToKeepStr: &#x27;20&#x27;))<br>            timestamps()<br>        &#125;<br><br>        environment &#123;<br>            userName = common.getBuildUser()<br>        &#125;<br><br>        stages &#123;<br>            <br>            stage(&#x27;ImageTagIsNull&#x27;)&#123;<br>                steps&#123;<br>                    script&#123;<br>                        if(imageTag)&#123;<br>                            return true<br>                        &#125; else &#123;<br>                            currentBuild.result = &#x27;FAILURE&#x27;<br>                            throw new IllegalArgumentException(&quot;ERROR: 请选择镜像版本&quot;)<br>                            <br>                        &#125;<br>                    &#125;<br>                &#125;<br>            &#125;<br>            stage(&#x27;Deployment&#x27;)&#123;<br>                steps&#123;<br>                    script&#123;<br>                        mytools.PrintMes(&quot;k8s apply&quot;,&quot;green&quot;)<br>                        deploy.kubedphangzhou(product,srvName,imageTag,profile)<br>                        #调用下面构建的http请求<br>                   &#125;<br>                &#125;<br>            &#125;<br>        &#125;<br>    &#125;<br><br><br></code></pre></td></tr></table></figure></li>
 <li><p>构造发布请求</p>
@@ -359,9 +359,9 @@
       
         <a href="/tags/cicd/">#cicd</a>
       
-        <a href="/tags/go/">#go</a>
-      
         <a href="/tags/k8s/">#k8s</a>
+      
+        <a href="/tags/go/">#go</a>
       
         <a href="/tags/kubedp/">#kubedp</a>
       
