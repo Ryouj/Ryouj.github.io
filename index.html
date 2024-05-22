@@ -7,8 +7,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="apple-touch-icon" sizes="76x76" href="/img/fluid.png">
-  <link rel="icon" href="/img/fluid.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/imges/sys/fy.png">
+  <link rel="icon" href="/imges/sys/fy.png">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
@@ -307,15 +307,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/04/22/docker%E4%B9%8Bbuildx%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91%E9%95%9C%E5%83%8F/" target="_self">
-          Docker之Buildx跨平台编译镜像.md
+        <a href="/2024/04/22/docker%E4%B9%8Bmanifest%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/" target="_self">
+          Docker之Manifest多平台镜像合并推送清单
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/22/docker%E4%B9%8Bbuildx%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91%E9%95%9C%E5%83%8F/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/22/docker%E4%B9%8Bmanifest%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/" target="_self">
         <div>
-          - docker之buildx跨平台编译镜像 下载buildx二进制文件  12345下载二进制buildxhttps://github.com/docker/buildx/tree/v0.10.4$ mkdir -p ~/.docker/cli-plugins$ mv buildx ~/.docker/cli-plugins/docker-buildx   buildx命令测试  1docker
+          构建各平台的镜像并推送多平台清单 先分别构建 ARM 和 AMD64 平台的镜像，推送到仓库后 使用docker manifest 命令创建一个多平台镜像清单  12docker manifest create harbor-ops.itseeds.com/base/openjdk:17-alpine-env harbor-ops.itseeds.com/base/openjdk:17-alpin
         </div>
       </a>
 
@@ -370,15 +370,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2024/04/22/docker%E4%B9%8Bmanifest%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/" target="_self">
-          Docker之Manifest多平台镜像合并推送清单
+        <a href="/2024/04/22/docker%E4%B9%8Bbuildx%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91%E9%95%9C%E5%83%8F/" target="_self">
+          Docker之Buildx跨平台编译镜像.md
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/22/docker%E4%B9%8Bmanifest%E5%A4%9A%E5%B9%B3%E5%8F%B0%E9%95%9C%E5%83%8F%E5%90%88%E5%B9%B6%E6%8E%A8%E9%80%81%E6%B8%85%E5%8D%95/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/04/22/docker%E4%B9%8Bbuildx%E8%B7%A8%E5%B9%B3%E5%8F%B0%E7%BC%96%E8%AF%91%E9%95%9C%E5%83%8F/" target="_self">
         <div>
-          构建各平台的镜像并推送多平台清单 先分别构建 ARM 和 AMD64 平台的镜像，推送到仓库后 使用docker manifest 命令创建一个多平台镜像清单  12docker manifest create harbor-ops.itseeds.com/base/openjdk:17-alpine-env harbor-ops.itseeds.com/base/openjdk:17-alpin
+          - docker之buildx跨平台编译镜像 下载buildx二进制文件  12345下载二进制buildxhttps://github.com/docker/buildx/tree/v0.10.4$ mkdir -p ~/.docker/cli-plugins$ mv buildx ~/.docker/cli-plugins/docker-buildx   buildx命令测试  1docker
         </div>
       </a>
 
@@ -766,6 +766,69 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
+        <a href="/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/" target="_self">
+          kubevsphere之ks平台部署
+        </a>
+      </h1>
+
+      
+      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/" target="_self">
+        <div>
+          kubevsphere-k8s平台部署1.环境1234567891011121314151617181920212223242526每台服务器执行命令hostnamectl set-hostname k8smasterhostnamectl set-hostname k8snode1hostnamectl set-hostname k8snode2# 将 SELinux 设置为 permissiv
+        </div>
+      </a>
+
+      <div class="index-btm post-metas">
+        
+          <div class="post-meta mr-3">
+            <i class="iconfont icon-date"></i>
+            <time datetime="2024-03-05 14:48" pubdate>
+              2024-03-05
+            </time>
+          </div>
+        
+        
+          <div class="post-meta mr-3 d-flex align-items-center">
+            <i class="iconfont icon-category"></i>
+            
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+          </div>
+        
+        
+          <div class="post-meta">
+            <i class="iconfont icon-tags"></i>
+            
+              <a href="/tags/k8s%E5%8D%87%E7%BA%A7/">#k8s升级</a>
+            
+              <a href="/tags/kubevsphere/">#kubevsphere</a>
+            
+          </div>
+        
+      </div>
+    </article>
+  </div>
+
+  <div class="row mx-auto index-card">
+    
+    
+    <article class="col-12 col-md-12 mx-auto index-info">
+      <h1 class="index-header">
+        
         <a href="/2024/03/05/kubevsphere-k8s%E7%89%88%E6%9C%AC%E5%8D%87%E7%BA%A7/" target="_self">
           kubevsphere之k8s版本升级
         </a>
@@ -815,72 +878,9 @@
             
               <a href="/tags/k8s/">#k8s</a>
             
-              <a href="/tags/kubevsphere/">#kubevsphere</a>
-            
               <a href="/tags/k8s%E5%8D%87%E7%BA%A7/">#k8s升级</a>
             
-          </div>
-        
-      </div>
-    </article>
-  </div>
-
-  <div class="row mx-auto index-card">
-    
-    
-    <article class="col-12 col-md-12 mx-auto index-info">
-      <h1 class="index-header">
-        
-        <a href="/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/" target="_self">
-          kubevsphere之ks平台部署
-        </a>
-      </h1>
-
-      
-      <a class="index-excerpt index-excerpt__noimg" href="/2024/03/05/kubevsphere-k8s%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2/" target="_self">
-        <div>
-          kubevsphere-k8s平台部署1.环境1234567891011121314151617181920212223242526每台服务器执行命令hostnamectl set-hostname k8smasterhostnamectl set-hostname k8snode1hostnamectl set-hostname k8snode2# 将 SELinux 设置为 permissiv
-        </div>
-      </a>
-
-      <div class="index-btm post-metas">
-        
-          <div class="post-meta mr-3">
-            <i class="iconfont icon-date"></i>
-            <time datetime="2024-03-05 14:48" pubdate>
-              2024-03-05
-            </time>
-          </div>
-        
-        
-          <div class="post-meta mr-3 d-flex align-items-center">
-            <i class="iconfont icon-category"></i>
-            
-
-<span class="category-chains">
-  
-  
-    
-      <span class="category-chain">
-        
-  <a href="/categories/k8s/" class="category-chain-item">k8s</a>
-  
-  
-
-      </span>
-    
-  
-</span>
-
-          </div>
-        
-        
-          <div class="post-meta">
-            <i class="iconfont icon-tags"></i>
-            
               <a href="/tags/kubevsphere/">#kubevsphere</a>
-            
-              <a href="/tags/k8s%E5%8D%87%E7%BA%A7/">#k8s升级</a>
             
           </div>
         
