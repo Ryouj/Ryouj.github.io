@@ -26,9 +26,9 @@
       
       <tag>cicd</tag>
       
-      <tag>go</tag>
-      
       <tag>k8s</tag>
+      
+      <tag>go</tag>
       
       <tag>kubedp</tag>
       
@@ -55,9 +55,9 @@
     
     <tags>
       
-      <tag>cicd</tag>
-      
       <tag>buildx</tag>
+      
+      <tag>cicd</tag>
       
     </tags>
     
@@ -82,9 +82,9 @@
     
     <tags>
       
-      <tag>cicd</tag>
-      
       <tag>buildx</tag>
+      
+      <tag>cicd</tag>
       
     </tags>
     
@@ -279,11 +279,11 @@
     
     <tags>
       
-      <tag>k8s</tag>
-      
       <tag>k8s升级</tag>
       
       <tag>kubevsphere</tag>
+      
+      <tag>k8s</tag>
       
     </tags>
     
